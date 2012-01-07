@@ -1,0 +1,16 @@
+{
+  "author": "Tim <flybyme@wiyc.info>",
+  "name": "transmission",
+  "description": "API client for transmissionbt",
+  "version": "0.0.1a",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FLYBYME/node-transmission.git"
+  },
+  "main": "lib/transmission",
+  "engines": {
+    
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
