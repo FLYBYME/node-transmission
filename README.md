@@ -1,6 +1,6 @@
 # node-transmission
 
-transmission-daemon wrapper script written for node.js
+transmission-daemon wrapper script written in node.js
 
 ## Install
 
