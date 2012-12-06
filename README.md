@@ -56,7 +56,7 @@ Remove torrents.
 Remove also local data when `del` is `true`.
 
 ```coffee
-br.remove [1, 7], no, (err, arg) ->
+br.remove [1, 7], true, (err, arg) ->
 ```
 
 ### br.get([ids], callback)
