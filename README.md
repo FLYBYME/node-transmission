@@ -112,35 +112,37 @@ br.startNow [1, 7], (err, arg) ->
 ### All together.
 
 ```js
-var bt = new (require('../lib/transmission.js'))({})
+var bt = new (require('../lib/transmission.js'))({});
+
+var hash = '5db3a7a15a1391795a74b48c74df5d515a12c6f7';
 
 bt.add('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent', function(err, result) {
 	if (err) {
-		throw err
+		throw err;
 	}
-	console.log(result)
-	bt.stop('5db3a7a15a1391795a74b48c74df5d515a12c6f7', function(err) {
+	console.log(result);
+	bt.stop(hash, function(err) {
 		if (err) {
-			throw err
+			throw err;
 		}
-		bt.start('5db3a7a15a1391795a74b48c74df5d515a12c6f7', function(err) {
+		bt.start(hash, function(err) {
 			if (err) {
-				throw err
+				throw err;
 			}
-			bt.get('5db3a7a15a1391795a74b48c74df5d515a12c6f7', function(err, result) {
+			bt.get(hash, function(err, result) {
 				if (err) {
-					throw err
+					throw err;
 				}
-				console.log(result)
-				bt.remove('5db3a7a15a1391795a74b48c74df5d515a12c6f7', true, function(err) {
+				console.log(result);
+				bt.remove(hash, true, function(err) {
 					if (err) {
-						throw err
+						throw err;
 					}
-				})
-			})
-		})
-	})
-})
+				});
+			});
+		});
+	});
+});
 ```
 
 
