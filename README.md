@@ -148,41 +148,59 @@ br.startNow [1, 7], (err, arg) ->
 ### All together.
 
 ```js
-var br = new (require('../lib/transmission.js'))({});
+var bt = new (require('../lib/transmission.js'))({
+	//port : 9091,
+	//host : 'localhost',
+	//username : 'admin',
+	//password : 'password1'
+})
 
-//hash for the debian torrent
-var hash = '5db3a7a15a1391795a74b48c74df5d515a12c6f7';
+bt.on('added', function(hash, id, name) {
+	console.log('torrent added', hash, id, name)
+})
+bt.on('removed', function(id) {
+	console.log('torrent removed id:', id)
+})
+bt.on('stopped', function(id) {
+	console.log('torrent stopped id:', id)
+})
+bt.on('start-now', function(id) {
+	console.log('torrent start now id:', id)
+})
+bt.on('active', function(torrents) {
+	console.log('active torrent count:', torrents.length)
+})
 
-//debian torrent
-var torrentURL = 'http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent';
-
-br.add(torrentURL, function(err, result) {
+bt.add('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent', function(err, result) {
 	if (err) {
-		throw err;
+		throw err
 	}
-	console.log(result);
-	br.stop(hash, function(err) {
+	var id = result.id
+	//console.log(result)
+	bt.stop(id, function(err) {
 		if (err) {
-			throw err;
+			throw err
 		}
-		br.start(hash, function(err) {
+		bt.start(id, function(err) {
 			if (err) {
-				throw err;
+				throw err
 			}
-			br.get(hash, function(err, result) {
+			bt.get(id, function(err, result) {
 				if (err) {
-					throw err;
+					throw err
 				}
-				console.log(result);
-				br.remove(hash, true, function(err) {
+				//console.log(result)
+
+				bt.remove(id, true, function(err) {
 					if (err) {
-						throw err;
+						throw err
 					}
-				});
-			});
-		});
-	});
-});
+					bt.active()
+				})
+			})
+		})
+	})
+})
 ```
 
 
