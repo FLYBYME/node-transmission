@@ -38,6 +38,34 @@ br.status =
   SEED          : 6  # Seeding
   ISOLATED      : 7  # Torrent can't find peers
 ```
+##Events
+
+### Event: added ###
+
+`function (hash, id, name) { }`
+
+Emits when a new torrent is added
+### Event: removed ###
+
+`function (id) { }`
+
+Emits when a torrent is removed
+### Event: stopped ###
+
+`function (id) { }`
+
+Emits when a torrent is stopped
+### Event: start-now ###
+
+`function (id) { }`
+
+Emits when a torrent is forced to start
+### Event: active ###
+
+`function (torrents) { }`
+
+Emits when the active method is called.
+
 
 ## Methods
 
@@ -57,6 +85,14 @@ Remove also local data when `del` is `true`.
 
 ```coffee
 br.remove [1, 7], true, (err, arg) ->
+```
+
+### br.active(callback)
+
+List of active torrents. Callback is not needed and will fire the `active` event.
+
+```coffee
+br.active (err, arg) ->
 ```
 
 ### br.get([ids], callback)
