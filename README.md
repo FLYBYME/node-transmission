@@ -145,6 +145,46 @@ Bypass the download queue, start working torrents immediately.
 br.startNow [1, 7], (err, arg) ->
 ```
 
+### br.verify(ids, callback)
+
+Verify torrent data.
+
+```coffee
+br.verify [1, 7], (err, arg) ->
+```
+
+### br.reannounce(ids, callback)
+
+Reannounce to the tracker, ask for more peers.
+
+```coffee
+br.reannounce [1, 7], (err, arg) ->
+```
+
+### br.session(callback)
+
+Get cleint session infomation.
+
+```coffee
+br.session (err, arg) ->
+```
+
+### br.session({}, callback)
+
+Set session infomation.
+
+```coffee
+br.session {'download-dir':'/my/path'}, (err, arg) ->
+```
+
+### br.sessionStats(callback)
+
+Get cleint session stats.
+
+```coffee
+br.sessionStats (err, arg) ->
+```
+
 ### All together.
 
 ```js
