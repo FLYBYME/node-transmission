@@ -2,7 +2,7 @@
 	"author": "Tim <price.timmy@gmail.com",
 	"name": "transmission",
 	"description": "API client for transmissionbt",
-	"version": "0.2.0",
+	"version": "0.2.2",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/FLYBYME/node-transmission.git"
