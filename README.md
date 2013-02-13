@@ -76,9 +76,7 @@ Add torrents to transmission-daemon.
 ```coffee
 br.add 'path/or/url', (err, arg) ->
 ```
-### br.add(path, dir, callback)
-
-Add torrents to transmission-daemon.
+OR
 
 ```coffee
 br.add 'path/or/url', 'dir/to/download/to', (err, arg) ->
