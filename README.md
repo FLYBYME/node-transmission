@@ -12,7 +12,7 @@ npm install transmission
 
 ```coffee
 Transmission = require 'transmission'
-br = new Transmission
+transmission = new Transmission
   host: 'localhost'  # default 'localhost'
   port: 9091         # default 9091
   username: 'hoge'   # default blank
@@ -25,10 +25,10 @@ br = new Transmission
 
 RPC returned torrent status with integer `0-7`.
 
-Using `br.status` for inspect status.
+Using `transmission.status` for inspect status.
 
 ```
-br.status =
+transmission.status =
   STOPPED       : 0  # Torrent is stopped
   CHECK_WAIT    : 1  # Queued to check files
   CHECK         : 2  # Checking files
@@ -69,38 +69,41 @@ Emits when the active method is called.
 
 ## Methods
 
-### br.add(path, callback)
+### transmission.add(path, callback)
 
 Add torrents to transmission-daemon.
 
 ```coffee
-br.add 'path/or/url', (err, arg) ->
+transmission.add 'path/or/url', (err, arg) ->
 ```
 OR
 
+The `options` object would be the arguments passed to transmission.
+If you want to set the download directory of the torrent you would pass in `"download-dir":"/my/path"`
+
 ```coffee
-br.add 'path/or/url', 'dir/to/download/to', (err, arg) ->
+transmission.add 'path/or/url', options, (err, arg) ->
 ```
 
-### br.remove(ids, del, callback)
+### transmission.remove(ids, del, callback)
 
 Remove torrents.
 
 Remove also local data when `del` is `true`.
 
 ```coffee
-br.remove [1, 7], true, (err, arg) ->
+transmission.remove [1, 7], true, (err, arg) ->
 ```
 
-### br.active(callback)
+### transmission.active(callback)
 
 List of active torrents. Callback is not needed and will fire the `active` event.
 
 ```coffee
-br.active (err, arg) ->
+transmission.active (err, arg) ->
 ```
 
-### br.get([ids], callback)
+### transmission.get([ids], callback)
 
 Get torrents info that optional `ids`.
 
@@ -108,7 +111,7 @@ If omit `ids`, get all torrents.
 
 ```coffee
 # Get torrents with id #1 and #7
-br.get [1, 7], (err, arg) ->
+transmission.get [1, 7], (err, arg) ->
   if err
     console.error err
   else
@@ -116,127 +119,127 @@ br.get [1, 7], (err, arg) ->
       console.log arg.torrents
 
 # Get all torrents and remove it if status is stopped.
-br.get (err, arg) ->
+transmission.get (err, arg) ->
   if err
     console.error err
   else
     for torrent in arg.torrents
-      if torrent.status is br.status.STOPPED
-        br.remove [torrent.id], (err) ->
+      if torrent.status is transmission.status.STOPPED
+        transmission.remove [torrent.id], (err) ->
           console.error err if err
 ```
 
-### br.stop(ids, callback)
+### transmission.stop(ids, callback)
 
 Stop working torrents.
 
 ```coffee
-br.stop [1, 7], (err, arg) ->
+transmission.stop [1, 7], (err, arg) ->
 ```
 
-### br.start(ids, callback)
+### transmission.start(ids, callback)
 
 Start working torrents.
 
 ```coffee
-br.start [1, 7], (err, arg) ->
+transmission.start [1, 7], (err, arg) ->
 ```
 
-### br.startNow(ids, callback)
+### transmission.startNow(ids, callback)
 
 Bypass the download queue, start working torrents immediately.
 
 ```coffee
-br.startNow [1, 7], (err, arg) ->
+transmission.startNow [1, 7], (err, arg) ->
 ```
 
-### br.verify(ids, callback)
+### transmission.verify(ids, callback)
 
 Verify torrent data.
 
 ```coffee
-br.verify [1, 7], (err, arg) ->
+transmission.verify [1, 7], (err, arg) ->
 ```
 
-### br.reannounce(ids, callback)
+### transmission.reannounce(ids, callback)
 
 Reannounce to the tracker, ask for more peers.
 
 ```coffee
-br.reannounce [1, 7], (err, arg) ->
+transmission.reannounce [1, 7], (err, arg) ->
 ```
 
-### br.session(callback)
+### transmission.session(callback)
 
 Get cleint session infomation.
 
 ```coffee
-br.session (err, arg) ->
+transmission.session (err, arg) ->
 ```
 
-### br.session({}, callback)
+### transmission.session({}, callback)
 
 Set session infomation.
 
 ```coffee
-br.session {'download-dir':'/my/path'}, (err, arg) ->
+transmission.session {'download-dir':'/my/path'}, (err, arg) ->
 ```
 
-### br.sessionStats(callback)
+### transmission.sessionStats(callback)
 
 Get cleint session stats.
 
 ```coffee
-br.sessionStats (err, arg) ->
+transmission.sessionStats (err, arg) ->
 ```
 
 ### All together.
 
 ```js
-var bt = new (require('../lib/transmission.js'))({
+var transmission = new (require('../lib/transmission.js'))({
 	//port : 9091,
 	//host : 'localhost',
 	//username : 'admin',
 	//password : 'password1'
 })
 
-bt.on('added', function(hash, id, name) {
+transmission.on('added', function(hash, id, name) {
 	console.log('torrent added', hash, id, name)
 })
-bt.on('removed', function(id) {
+transmission.on('removed', function(id) {
 	console.log('torrent removed id:', id)
 })
-bt.on('stopped', function(id) {
+transmission.on('stopped', function(id) {
 	console.log('torrent stopped id:', id)
 })
-bt.on('start-now', function(id) {
+transmission.on('start-now', function(id) {
 	console.log('torrent start now id:', id)
 })
-bt.on('active', function(torrents) {
+transmission.on('active', function(torrents) {
 	console.log('active torrent count:', torrents.length)
 })
 
-bt.add('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent', function(err, result) {
+transmission.add('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent', function(err, result) {
 	if (err) {
 		throw err
 	}
 	var id = result.id
 	//console.log(result)
-	bt.stop(id, function(err) {
+	transmission.stop(id, function(err) {
 		if (err) {
 			throw err
 		}
-		bt.start(id, function(err) {
+		transmission.start(id, function(err) {
 			if (err) {
 				throw err
 			}
-			bt.get(id, function(err, result) {
+			transmission.get(id, function(err, result) {
 				if (err) {
 					throw err
 				}
 				//console.log(result)
 
-				bt.remove(id, true, function(err) {
+				transmission.remove(id, true, function(err) {
 					if (err) {
 						throw err
 					}
