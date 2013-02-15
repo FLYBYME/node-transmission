@@ -212,8 +212,8 @@ transmission.on('removed', function(id) {
 transmission.on('stopped', function(id) {
 	console.log('torrent stopped id:', id)
 })
-transmission.on('start-now', function(id) {
-	console.log('torrent start now id:', id)
+transmission.on('force', function(id) {
+	console.log('torrent force start id:', id)
 })
 transmission.on('active', function(torrents) {
 	console.log('active torrent count:', torrents.length)
