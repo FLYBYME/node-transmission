@@ -40,27 +40,27 @@ transmission.status =
 ```
 ##Events
 
-### Event: added ###
+### Event: "added" ###
 
 `function (hash, id, name) { }`
 
 Emits when a new torrent is added
-### Event: removed ###
+### Event: "removed" ###
 
 `function (id) { }`
 
 Emits when a torrent is removed
-### Event: stopped ###
+### Event: "stopped" ###
 
 `function (id) { }`
 
 Emits when a torrent is stopped
-### Event: start-now ###
+### Event: "force" ###
 
 `function (id) { }`
 
 Emits when a torrent is forced to start
-### Event: active ###
+### Event: "active" ###
 
 `function (torrents) { }`
 
