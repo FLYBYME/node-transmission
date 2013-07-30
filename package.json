@@ -2,11 +2,10 @@
 	"author": "Tim <git@mangoraft.com",
 	"name": "transmission",
 	"description": "API client for transmissionbt",
-	"version": "0.2.6",
+	"version": "0.3.0",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/FLYBYME/node-transmission.git"
 	},
-	"main": "lib/transmission",
-	"engines": {}
+	"main": "lib/transmission"
 }
