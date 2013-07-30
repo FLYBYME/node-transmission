@@ -38,34 +38,6 @@ transmission.status =
   SEED          : 6  # Seeding
   ISOLATED      : 7  # Torrent can't find peers
 ```
-##Events
-
-### Event: "added" ###
-
-`function (hash, id, name) { }`
-
-Emits when a new torrent is added
-### Event: "removed" ###
-
-`function (id) { }`
-
-Emits when a torrent is removed
-### Event: "stopped" ###
-
-`function (id) { }`
-
-Emits when a torrent is stopped
-### Event: "force" ###
-
-`function (id) { }`
-
-Emits when a torrent is forced to start
-### Event: "active" ###
-
-`function (torrents) { }`
-
-Emits when the active method is called.
-
 
 ## Methods
 
