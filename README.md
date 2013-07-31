@@ -17,6 +17,7 @@ transmission = new Transmission
   port: 9091         # default 9091
   username: 'hoge'   # default blank
   password: 'fuga'   # default blank
+  url: '/my/other/url'   # default '/transmission/rpc'
 ```
 
 ## Definition
