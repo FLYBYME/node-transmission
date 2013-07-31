@@ -1,24 +1,8 @@
 var bt = new (require('../lib/transmission.js'))({
 	//port : 9091,
 	//host : 'localhost',
-	//username : 'admin',
-	//password : 'password1'
-})
-
-bt.on('added', function(hash, id, name) {
-	console.log('torrent added', hash, id, name)
-})
-bt.on('removed', function(id) {
-	console.log('torrent removed id:', id)
-})
-bt.on('stopped', function(id) {
-	console.log('torrent stopped id:', id)
-})
-bt.on('start-now', function(id) {
-	console.log('torrent start now id:', id)
-})
-bt.on('active', function(torrents) {
-	console.log('active torrent count:', torrents.length)
+	//username : 'hoge',
+	//password : 'fuga'
 })
 
 bt.add('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent', function(err, result) {
@@ -45,7 +29,6 @@ bt.add('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-n
 					if (err) {
 						throw err
 					}
-					bt.active()
 				})
 			})
 		})
