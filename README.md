@@ -49,7 +49,7 @@ Set torrent's properties.
 ```coffee
 transmission.set [1, 6], options, (err) ->
 ```
-You must provide ono or more ids. According to the rpc-spec, transmission will not respond a success argument. Only error.
+You must provide one or more ids. According to the rpc-spec, transmission will not respond a success argument. Only error.
 
 ### transmission.add(path, callback)
 
