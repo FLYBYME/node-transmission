@@ -51,12 +51,29 @@ transmission.set [1, 6], options, (err) ->
 ```
 You must provide one or more ids. According to the rpc-spec, transmission will not respond a success argument. Only error.
 
-### transmission.add(path, callback)
+### transmission.addFile(filePath, callback)
 
 Add torrents to transmission-daemon.
 
 ```coffee
-transmission.add 'path/or/url', (err, arg) ->
+transmission.addFile 'path', (err, arg) ->
+```
+
+OR
+
+The `options` object would be the arguments passed to transmission.
+If you want to set the download directory of the torrent you would pass in `"download-dir":"/my/path"`
+
+```coffee
+transmission.addFile 'path', options, (err, arg) ->
+```
+
+### transmission.addUrl(url, callback)
+
+Add torrents to transmission-daemon.
+
+```coffee
+transmission.addUrl 'url', (err, arg) ->
 ```
 OR
 
@@ -64,7 +81,7 @@ The `options` object would be the arguments passed to transmission.
 If you want to set the download directory of the torrent you would pass in `"download-dir":"/my/path"`
 
 ```coffee
-transmission.add 'path/or/url', options, (err, arg) ->
+transmission.addUrl 'url', options, (err, arg) ->
 ```
 
 ### transmission.remove(ids, del, callback)
@@ -207,7 +224,7 @@ function removeTorrent(id) {
 	})
 }
 
-transmission.add('http://cdimage.debian.org/debian-cd/7.1.0/i386/bt-cd/debian-7.1.0-i386-netinst.iso.torrent', {
+transmission.addUrl('http://cdimage.debian.org/debian-cd/7.1.0/i386/bt-cd/debian-7.1.0-i386-netinst.iso.torrent', {
 	"download-dir" : "/home/torrents"
 }, function(err, result) {
 	if (err) {
