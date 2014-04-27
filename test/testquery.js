@@ -5,7 +5,7 @@ var bt = new (require('../lib/transmission.js'))({
 	//password : 'fuga'
 })
 
-bt.add('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent', function(err, result) {
+bt.addUrl('http://cdimage.debian.org/debian-cd/6.0.6/i386/bt-cd/debian-6.0.6-i386-netinst.iso.torrent', function(err, result) {
 	if (err) {
 		throw err
 	}
