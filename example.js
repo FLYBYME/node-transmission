@@ -58,7 +58,7 @@ function remove(id) {
 	});
 };
 
-transmission.addUrl('http://cdimage.debian.org/debian-cd/7.1.0/i386/bt-cd/debian-7.1.0-i386-netinst.iso.torrent', {
+transmission.addUrl('http://cdimage.debian.org/debian-cd/current/i386/bt-cd/debian-7.5.0-i386-netinst.iso.torrent', {
 	//options
 }, function(err, result) {
 	if (err) {
