@@ -7,8 +7,8 @@ var transmission = new Transmission({
 });
 
 
-function get(id, cb) {
-	transmission.get(id, function(err, result) {
+function get(hash, cb) {
+	transmission.get(hash, function(err, result) {
 		if (err) {
 			throw err
 		}
@@ -16,11 +16,12 @@ function get(id, cb) {
 	});
 };
 
-function watch(id) {
-	get(id, function(err, torrent) {
+function watch(hash) {
+	get(hash, function(err, torrent) {
 		if (err) {
 			throw err;
 		}
+		
 		var downloadedEver = 0;
 		var WatchBar = new ProgressBar('  downloading [:bar] :percent :etas', {
 			complete : '=',
@@ -41,16 +42,16 @@ function watch(id) {
 				return remove(id);
 			}
 			setTimeout(function() {
-				get(id, tick);
+				get(hash, tick);
 			}, 1000);
 		}
 
-		get(id, tick);
+		get(hash, tick);
 	});
 }
 
-function remove(id) {
-	transmission.remove(id, function(err) {
+function remove(hash) {
+	transmission.remove(hash, function(err) {
 		if (err) {
 			throw err
 		}
@@ -64,6 +65,6 @@ transmission.addUrl('http://cdimage.debian.org/debian-cd/current/i386/bt-cd/debi
 	if (err) {
 		return console.log(err);
 	}
-	var id = result.id;
-	watch(id);
+	var hash = result.hashString;
+	watch(hash);
 });
