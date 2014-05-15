@@ -195,7 +195,7 @@ transmission.sessionStats (err, arg) ->
 ### All together.
 
 ```js
-vvar Transmission = require('./')
+var Transmission = require('./')
 
 var transmission = new Transmission({
 	port : 9091,
