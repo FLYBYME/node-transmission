@@ -7,5 +7,8 @@
 		"type": "git",
 		"url": "git://github.com/FLYBYME/node-transmission.git"
 	},
-	"main": "lib/transmission"
+	"main": "lib/transmission",
+	"devDependencies" : {
+		"progress": "1.1.x"
+	}
 }
