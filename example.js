@@ -10,18 +10,18 @@ var transmission = new Transmission({
 function get(hash, cb) {
 	transmission.get(hash, function(err, result) {
 		if (err) {
-			throw err
+			throw err;
 		}
 		cb(null, result.torrents[0]);
 	});
-};
+}
 
 function watch(hash) {
 	get(hash, function(err, torrent) {
 		if (err) {
 			throw err;
 		}
-		
+
 		var downloadedEver = 0;
 		var WatchBar = new ProgressBar('  downloading [:bar] :percent :etas', {
 			complete : '=',
@@ -38,8 +38,8 @@ function watch(hash) {
 			downloadedEver = torrent.downloadedEver;
 			WatchBar.tick(downloaded);
 
-			if (torrent.sizeWhenDone == torrent.downloadedEver) {
-				return remove(id);
+			if (torrent.sizeWhenDone === torrent.downloadedEver) {
+				return remove(hash);
 			}
 			setTimeout(function() {
 				get(hash, tick);
@@ -53,13 +53,15 @@ function watch(hash) {
 function remove(hash) {
 	transmission.remove(hash, function(err) {
 		if (err) {
-			throw err
+			throw err;
 		}
 		console.log('torrent was removed');
 	});
-};
+}
 
-transmission.addUrl('http://cdimage.debian.org/debian-cd/current/i386/bt-cd/debian-7.5.0-i386-netinst.iso.torrent', {
+var sample = 'http://cdimage.debian.org/debian-cd/7.7.0/i386/bt-cd/debian-7.7.0-i386-netinst.iso.torrent';
+
+transmission.addUrl(sample, {
 	//options
 }, function(err, result) {
 	if (err) {
