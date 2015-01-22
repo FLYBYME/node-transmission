@@ -1,5 +1,8 @@
 {
   "author": "Tim <git@mangoraft.com",
+  "contributors": [
+    "Alex Bepple"
+  ],
   "name": "transmission",
   "description": "API client for transmissionbt",
   "version": "0.4.1",
@@ -11,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/FLYBYME/node-transmission.git"
+    "url": "git://github.com/alexbepple/node-transmission.git"
   },
   "main": "lib/transmission",
   "devDependencies": {
