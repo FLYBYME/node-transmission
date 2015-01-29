@@ -1,14 +1,31 @@
 {
-	"author": "Tim <git@mangoraft.com",
-	"name": "transmission",
-	"description": "API client for transmissionbt",
-	"version": "0.4.0",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/FLYBYME/node-transmission.git"
-	},
-	"main": "lib/transmission",
-	"devDependencies" : {
-		"progress": "1.1.x"
-	}
+  "author": "Tim <git@mangoraft.com",
+  "contributors": [
+    "Alex Bepple"
+  ],
+  "name": "transmission",
+  "description": "API client for transmissionbt",
+  "version": "0.4.1",
+  "scripts": {
+    "test": "mocha --ui bdd --reporter spec --colors --slow 10000"
+  },
+  "bin": {
+    "node-transmission": "./bin/node-transmission"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alexbepple/node-transmission.git"
+  },
+  "main": "lib/transmission",
+  "devDependencies": {
+    "async": "^0.9.0",
+    "chai": "^1.9.2",
+    "dotenv": "^0.4.0",
+    "mocha": "^2.0.1",
+    "mocha-jshint": "0.0.9",
+    "progress": "^1.1.8"
+  },
+  "dependencies": {
+    "yargs": "^1.3.3"
+  }
 }

@@ -170,7 +170,7 @@ transmission.reannounce [1, 7], (err, arg) ->
 
 ### transmission.session(callback)
 
-Get cleint session infomation.
+Get client session infomation.
 
 ```coffee
 transmission.session (err, arg) ->
@@ -186,7 +186,7 @@ transmission.session {'download-dir':'/my/path'}, (err, arg) ->
 
 ### transmission.sessionStats(callback)
 
-Get cleint session stats.
+Get client session stats.
 
 ```coffee
 transmission.sessionStats (err, arg) ->
