@@ -6,7 +6,6 @@ var transmission = new Transmission({
 	host : '127.0.0.1'
 });
 
-
 function get(hash, cb) {
 	transmission.get(hash, function(err, result) {
 		if (err) {
@@ -59,13 +58,13 @@ function remove(hash) {
 	});
 }
 
-var sample = 'http://cdimage.debian.org/debian-cd/7.7.0/i386/bt-cd/debian-7.7.0-i386-netinst.iso.torrent';
+var sample = 'http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-desktop-amd64.iso.torrent';
 
 transmission.addUrl(sample, {
 	//options
 }, function(err, result) {
 	if (err) {
-		return console.log(err);
+		return console.log(err)
 	}
 	var hash = result.hashString;
 	watch(hash);

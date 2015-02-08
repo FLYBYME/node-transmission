@@ -34,8 +34,8 @@ describe('transmission', function(){
 	var expect = chai.expect;
 	var transmission = new Transmission(clientOption);
 
-	var sampleUrl = 'http://cdimage.debian.org/debian-cd/7.7.0/i386/bt-cd/debian-7.7.0-i386-netinst.iso.torrent';
-	var sampleHash = '2fde3574e088da7bafe9f70c033a1c0ab102b76b';
+	var sampleUrl = 'http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-desktop-amd64.iso.torrent';
+	var sampleHash = 'cb84ccc10f296df72d6c40ba7a07c178a4323a14';
 
 	chai.config.includeStack = true;
 
