@@ -10,7 +10,7 @@ npm install transmission
 
 ## How to Use
 
-```coffee
+```js
 Transmission = require 'transmission'
 transmission = new Transmission
   host: 'localhost'  # default 'localhost'
@@ -46,8 +46,8 @@ transmission.status =
 
 Set torrent's properties.
 
-```coffee
-transmission.set [1, 6], options, (err) ->
+```js
+transmission.set (id, options, function(err, arg){});
 ```
 You must provide one or more ids. According to the rpc-spec, transmission will not respond a success argument. Only error.
 
@@ -55,8 +55,8 @@ You must provide one or more ids. According to the rpc-spec, transmission will n
 
 Add torrents to transmission-daemon.
 
-```coffee
-transmission.addFile 'path', (err, arg) ->
+```js
+transmission.addFile('path', function(err, arg){});
 ```
 
 OR
@@ -64,16 +64,16 @@ OR
 The `options` object would be the arguments passed to transmission.
 If you want to set the download directory of the torrent you would pass in `"download-dir":"/my/path"`
 
-```coffee
-transmission.addFile 'path', options, (err, arg) ->
+```js
+transmission.addFile('path', options, function(err, arg){});
 ```
 
 ### transmission.addUrl(url, callback)
 
 Add torrents to transmission-daemon.
 
-```coffee
-transmission.addUrl 'url', (err, arg) ->
+```js
+transmission.addUrl('url', function(err, arg){});
 ```
 OR
 
@@ -90,16 +90,16 @@ Remove torrents.
 
 Remove also local data when `del` is `true`.
 
-```coffee
-transmission.remove [1, 7], true, (err, arg) ->
+```js
+transmission.remove (id, function(err, arg){});
 ```
 
 ### transmission.active(callback)
 
 List of active torrents. Callback is not needed and will fire the `active` event.
 
-```coffee
-transmission.active (err, arg) ->
+```js
+transmission.active(function(err, arg){});
 ```
 
 ### transmission.get([ids], callback)
@@ -108,94 +108,99 @@ Get torrents info that optional `ids`.
 
 If omit `ids`, get all torrents.
 
-```coffee
+```js
 # Get torrents with id #1 and #7
-transmission.get [1, 7], (err, arg) ->
+transmission.get (id, function(err, arg){
   if err
     console.error err
-  else
+  else{
     for torrent in arg.torrents
       console.log arg.torrents
+   }
+});
 
 # Get all torrents and remove it if status is stopped.
-transmission.get (err, arg) ->
+transmission.get (function(err, arg){
   if err
     console.error err
-  else
+  else{
     for torrent in arg.torrents
       if torrent.status is transmission.status.STOPPED
-        transmission.remove [torrent.id], (err) ->
+        transmission.remove ([torrent.id], function (err){
           console.error err if err
+      	});
+  }
+});
 ```
 
 ### transmission.stop(ids, callback)
 
 Stop working torrents.
 
-```coffee
-transmission.stop [1, 7], (err, arg) ->
+```js
+transmission.stop (id, function(err, arg){});
 ```
 
 ### transmission.start(ids, callback)
 
 Start working torrents.
 
-```coffee
-transmission.start [1, 7], (err, arg) ->
+```js
+transmission.start (id, function(err, arg){});
 ```
 
 ### transmission.startNow(ids, callback)
 
 Bypass the download queue, start working torrents immediately.
 
-```coffee
-transmission.startNow [1, 7], (err, arg) ->
+```js
+transmission.startNow(id, function(err, arg){});
 ```
 
 ### transmission.verify(ids, callback)
 
 Verify torrent data.
 
-```coffee
-transmission.verify [1, 7], (err, arg) ->
+```js
+transmission.verify(id,function(err, arg){});
 ```
 
 ### transmission.reannounce(ids, callback)
 
 Reannounce to the tracker, ask for more peers.
 
-```coffee
-transmission.reannounce [1, 7], (err, arg) ->
+```js
+transmission.reannounce(id, function(err, arg){});
 ```
 
 ### transmission.session(callback)
 
 Get client session infomation.
 
-```coffee
-transmission.session (err, arg) ->
+```js
+transmission.session (function(err, arg){});
 ```
 
 ### transmission.session({}, callback)
 
 Set session infomation.
 
-```coffee
-transmission.session {'download-dir':'/my/path'}, (err, arg) ->
+```js
+transmission.session({'download-dir':'/my/path'}, function(err, arg){});
 ```
 
 ### transmission.sessionStats(callback)
 
 Get client session stats.
 
-```coffee
-transmission.sessionStats (err, arg) ->
+```js
+transmission.sessionStats(function(err, arg){});
 ```
 
 ### All together.
 
 ```js
-var Transmission = require('./')
+var Transmission = require('transmission')
 
 var transmission = new Transmission({
 	port : 9091,
