@@ -199,46 +199,134 @@ transmission.sessionStats(function(err, arg){});
 ### All together.
 
 ```js
-var Transmission = require('transmission')
+'use strict';
 
+var Transmission = require('transmission');
 var transmission = new Transmission({
-	port : 9091,
-	host : '127.0.0.1'
-})
+	port: 9091,			// DEFAULT : 9091
+	host: IP,			// DEAFULT : 127.0.0.1
+	username: 'hope',	// DEFAULT : BLANK
+	password: 'dope'	// DEFAULT : BLANK
+});
 
-function getTorrent(id) {
-	transmission.get(id, function(err, result) {
-		if (err) {
-			throw err
+for(var i=0;i<10;i++){
+	getTorrentDetails(i);
+}
+
+// Get details of all torrents
+function getStats(){
+	transmission.sessionStats(function(err, result){
+	if(err){
+		console.log(err);
+	} else {
+		console.log(result);
+	}
+	});
+}
+
+function deleteTorrent(id){
+	transmission.remove(id, true, function(err, result){
+		if (err){
+			console.log(err);
+		} else {
+			console.log(result);
 		}
-		console.log('bt.get returned ' + result.torrents.length + ' torrents')
-		result.torrents.forEach(function(torrent) {
-			console.log('hashString', torrent.hashString)
-		})
-		removeTorrent(id)
-	})
+	});
+}
+
+function addTorrent(url){
+	transmission.addUrl(url, {
+	    "download-dir" : "~/transmission/torrents"
+	}, function(err, result) {
+	    if (err) {
+	        return console.log(err);
+	    }
+	    var id = result.id;
+	    console.log('Just added a new torrent.');
+	    console.log('Torrent ID: ' + id);
+	});
+}
+
+function startTorrent(id){
+	transmission.start(id, function(err, result){});
+}
+
+function getAllActiveTorrents(){
+	transmission.active(function(err, result){
+	if (err){
+		console.log(err);
+	}
+	else {
+		for (var i=0; i< result.torrents.length; i++){
+			console.log(result.torrents[i].id);
+			console.log(result.torrents[i].name);
+		}
+	}
+	});
+}
+
+function stopAllActiveTorrents(){
+	transmission.active(function(err, result){
+	if (err){
+		console.log(err);
+	}
+	else {
+		for (var i=0; i< result.torrents.length; i++){
+			stopTorrents(result.torrents[i].id);
+		}
+	}
+	});
+}
+
+function stopTorrent(id){
+	transmission.stop(id, function(err, result){});
+}
+
+function getTorrentDetails(id) {
+    transmission.get(id, function(err, result) {
+        if (err) {
+            throw err;
+        }
+        if(result.torrents.length > 0){
+        	// console.log(result.torrents[0]);
+        	console.log("Name = "+ result.torrents[0].name);
+        	console.log("Download Rate = "+ result.torrents[0].rateDownload/1000);
+        	console.log("Upload Rate = "+ result.torrents[0].rateUpload/1000);
+        	console.log("Completed = "+ result.torrents[0].percentDone*100);
+        	console.log("ETA = "+ result.torrents[0].eta/3600);
+        	console.log("Status = "+ getStatusType(result.torrents[0].status));
+        }
+    });
+}
+
+function getStatusType(type){
+	if(type === 0){
+		return 'STOPPED';
+	} else if(type === 1){
+		return 'CHECK_WAIT';
+	} else if(type === 2){
+		return 'CHECK';
+	} else if(type === 3){
+		return 'DOWNLOAD_WAIT';
+	} else if(type === 4){
+		return 'DOWNLOAD';
+	} else if(type === 5){
+		return 'SEED_WAIT';
+	} else if(type === 6){
+		return 'SEED';
+	} else if(type === 7){
+		return 'ISOLATED';
+	}
 }
 
 function removeTorrent(id) {
-	transmission.remove(id, function(err) {
-		if (err) {
-			throw err
-		}
-		console.log('torrent was removed')
-	})
+    transmission.remove(id, function(err) {
+        if (err) {
+            throw err;
+        }
+        console.log('torrent was removed');
+    });
 }
-
-transmission.addUrl('http://cdimage.debian.org/debian-cd/7.1.0/i386/bt-cd/debian-7.1.0-i386-netinst.iso.torrent', {
-	"download-dir" : "/home/torrents"
-}, function(err, result) {
-	if (err) {
-		return console.log(err)
-	}
-	var id = result.id
-	console.log('Just added a new torrent.')
-	console.log('Torrent ID: ' + id)
-	getTorrent(id)
-})
 ```
 
 
