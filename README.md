@@ -80,8 +80,8 @@ OR
 The `options` object would be the arguments passed to transmission.
 If you want to set the download directory of the torrent you would pass in `"download-dir":"/my/path"`
 
-```coffee
-transmission.addUrl 'url', options, (err, arg) ->
+```js
+transmission.addUrl ('url', options, function(err, arg){});
 ```
 
 ### transmission.remove(ids, del, callback)
@@ -109,7 +109,6 @@ Get torrents info that optional `ids`.
 If omit `ids`, get all torrents.
 
 ```js
-# Get torrents with id #1 and #7
 transmission.get (id, function(err, arg){
   if err
     console.error err
