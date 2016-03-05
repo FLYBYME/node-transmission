@@ -19,8 +19,10 @@ if (process.env.PORT) {
 if (process.env.HOST) {
 	clientOption.host = process.env.HOST;
 }
-if (process.env.USERNAME) {
-	clientOption.username = process.env.USERNAME;
+
+//USERNAME and USER aren't overwritten by .env file and are used from the parent process
+if (process.env.USERN) {
+	clientOption.username = process.env.USERN;
 }
 if (process.env.PASSWORD) {
 	clientOption.password = process.env.PASSWORD;
@@ -132,6 +134,29 @@ describe('transmission', function(){
 					});
 				}
 			});
+		});
+
+		it('should rename the torrent', function(done){
+			transmission.addUrl(sampleUrl, function(err, info){
+                if (err) {
+                    done(err);
+                } else {
+					var newName = 'new Torrent Name';
+					var path = './';
+					transmission.rename(info.id, path, newName, function(err, info){
+                        if (err) {
+                            done(err);
+                        } else {
+                            transmission.get(info.id, function(err, got){
+                                if(newName !== got.torrents[0].name){
+                                    err = new Error('rename torrent failure');
+                                }
+                                done(err);
+                            });
+                        }
+                   });
+                }
+            });
 		});
 
 		it.skip('should stop working torrents', function(){
