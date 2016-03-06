@@ -15,8 +15,8 @@ Transmission = require 'transmission'
 transmission = new Transmission
   host: 'localhost'  # default 'localhost'
   port: 9091         # default 9091
-  username: 'hoge'   # default blank
-  password: 'fuga'   # default blank
+  username: 'username'   # default blank
+  password: 'password'   # default blank
   url: '/my/other/url'   # default '/transmission/rpc'
 ```
 
@@ -47,7 +47,7 @@ transmission.status =
 Set torrent's properties.
 
 ```js
-transmission.set (id, options, function(err, arg){});
+transmission.set(id, options, function(err, arg){});
 ```
 You must provide one or more ids. According to the rpc-spec, transmission will not respond a success argument. Only error.
 
@@ -81,7 +81,7 @@ The `options` object would be the arguments passed to transmission.
 If you want to set the download directory of the torrent you would pass in `"download-dir":"/my/path"`
 
 ```js
-transmission.addUrl ('url', options, function(err, arg){});
+transmission.addUrl('url', options, function(err, arg){});
 ```
 
 ### transmission.remove(ids, del, callback)
@@ -91,7 +91,7 @@ Remove torrents.
 Remove also local data when `del` is `true`.
 
 ```js
-transmission.remove (id, function(err, arg){});
+transmission.remove(ids, function(err, arg){});
 ```
 
 ### transmission.active(callback)
@@ -109,7 +109,7 @@ Get torrents info that optional `ids`.
 If omit `ids`, get all torrents.
 
 ```js
-transmission.get (id, function(err, arg){
+transmission.get(ids, function(err, arg){
   if err
     console.error err
   else{
@@ -119,7 +119,7 @@ transmission.get (id, function(err, arg){
 });
 
 # Get all torrents and remove it if status is stopped.
-transmission.get (function(err, arg){
+transmission.get(function(err, arg){
   if err
     console.error err
   else{
@@ -137,7 +137,7 @@ transmission.get (function(err, arg){
 Stop working torrents.
 
 ```js
-transmission.stop (id, function(err, arg){});
+transmission.stop(ids, function(err, arg){});
 ```
 
 ### transmission.start(ids, callback)
@@ -145,7 +145,7 @@ transmission.stop (id, function(err, arg){});
 Start working torrents.
 
 ```js
-transmission.start (id, function(err, arg){});
+transmission.start(ids, function(err, arg){});
 ```
 
 ### transmission.startNow(ids, callback)
@@ -153,7 +153,7 @@ transmission.start (id, function(err, arg){});
 Bypass the download queue, start working torrents immediately.
 
 ```js
-transmission.startNow(id, function(err, arg){});
+transmission.startNow(ids, function(err, arg){});
 ```
 
 ### transmission.verify(ids, callback)
@@ -161,7 +161,7 @@ transmission.startNow(id, function(err, arg){});
 Verify torrent data.
 
 ```js
-transmission.verify(id,function(err, arg){});
+transmission.verify(ids,function(err, arg){});
 ```
 
 ### transmission.reannounce(ids, callback)
@@ -169,7 +169,7 @@ transmission.verify(id,function(err, arg){});
 Reannounce to the tracker, ask for more peers.
 
 ```js
-transmission.reannounce(id, function(err, arg){});
+transmission.reannounce(ids, function(err, arg){});
 ```
 
 ### transmission.session(callback)
@@ -204,29 +204,15 @@ transmission.sessionStats(function(err, arg){});
 var Transmission = require('transmission');
 var transmission = new Transmission({
 	port: 9091,			// DEFAULT : 9091
-	host: IP,			// DEAFULT : 127.0.0.1
-	username: 'hope',	// DEFAULT : BLANK
-	password: 'dope'	// DEFAULT : BLANK
+	host: 192.168.1.34,			// DEAFULT : 127.0.0.1
+	username: 'username',	// DEFAULT : BLANK
+	password: 'password'	// DEFAULT : BLANK
 });
 
-for(var i=0;i<10;i++){
-	getTorrentDetails(i);
-}
-
-// Get details of all torrents
-function getStats(){
+// Get details of all torrents currently queued in transmission app
+function getTransmissionStats(){
 	transmission.sessionStats(function(err, result){
-	if(err){
-		console.log(err);
-	} else {
-		console.log(result);
-	}
-	});
-}
-
-function deleteTorrent(id){
-	transmission.remove(id, true, function(err, result){
-		if (err){
+		if(err){
 			console.log(err);
 		} else {
 			console.log(result);
@@ -234,6 +220,7 @@ function deleteTorrent(id){
 	});
 }
 
+// Add a torrent by passing a URL to .torrent file or a magnet link
 function addTorrent(url){
 	transmission.addUrl(url, {
 	    "download-dir" : "~/transmission/torrents"
@@ -247,10 +234,47 @@ function addTorrent(url){
 	});
 }
 
+// Get various stats about a torrent in the queue
+function getTorrentDetails(id) {
+    transmission.get(id, function(err, result) {
+        if (err) {
+            throw err;
+        }
+        if(result.torrents.length > 0){
+        	// console.log(result.torrents[0]);			// Gets all details
+        	console.log("Name = "+ result.torrents[0].name);
+        	console.log("Download Rate = "+ result.torrents[0].rateDownload/1000);
+        	console.log("Upload Rate = "+ result.torrents[0].rateUpload/1000);
+        	console.log("Completed = "+ result.torrents[0].percentDone*100);
+        	console.log("ETA = "+ result.torrents[0].eta/3600);
+        	console.log("Status = "+ getStatusType(result.torrents[0].status));
+        }
+    });
+}
+
+function deleteTorrent(id){
+	transmission.remove(id, true, function(err, result){
+		if (err){
+			console.log(err);
+		} else {
+			console.log(result);// Read this output to get more details which can be accessed as shown below.
+			// Extra details
+			console.log('bt.get returned ' + result.torrents.length + ' torrents');
+	 		result.torrents.forEach(function(torrent) {
+	 			console.log('hashString', torrent.hashString)
+	 		});
+	 		removeTorrent(id);
+		}
+	});
+}
+
+// To start a paused / stopped torrent which is still in queue
 function startTorrent(id){
 	transmission.start(id, function(err, result){});
 }
 
+// To get list of all torrents currently in queue (downloading + paused)
+// NOTE : This may return null if all torrents are in paused state 
 function getAllActiveTorrents(){
 	transmission.active(function(err, result){
 	if (err){
@@ -265,6 +289,12 @@ function getAllActiveTorrents(){
 	});
 }
 
+// Pause / Stop a torrent
+function stopTorrent(id){
+	transmission.stop(id, function(err, result){});
+}
+
+// Pause / Stop all torrent
 function stopAllActiveTorrents(){
 	transmission.active(function(err, result){
 	if (err){
@@ -278,27 +308,18 @@ function stopAllActiveTorrents(){
 	});
 }
 
-function stopTorrent(id){
-	transmission.stop(id, function(err, result){});
-}
-
-function getTorrentDetails(id) {
-    transmission.get(id, function(err, result) {
+// Remove a torrent from download queue
+// NOTE : This does not trash torrent data i.e. does not remove it from disk
+function removeTorrent(id) {
+    transmission.remove(id, function(err) {
         if (err) {
             throw err;
         }
-        if(result.torrents.length > 0){
-        	// console.log(result.torrents[0]);
-        	console.log("Name = "+ result.torrents[0].name);
-        	console.log("Download Rate = "+ result.torrents[0].rateDownload/1000);
-        	console.log("Upload Rate = "+ result.torrents[0].rateUpload/1000);
-        	console.log("Completed = "+ result.torrents[0].percentDone*100);
-        	console.log("ETA = "+ result.torrents[0].eta/3600);
-        	console.log("Status = "+ getStatusType(result.torrents[0].status));
-        }
+        console.log('torrent was removed');
     });
 }
 
+// Get torrent state
 function getStatusType(type){
 	if(type === 0){
 		return 'STOPPED';
@@ -319,14 +340,6 @@ function getStatusType(type){
 	}
 }
 
-function removeTorrent(id) {
-    transmission.remove(id, function(err) {
-        if (err) {
-            throw err;
-        }
-        console.log('torrent was removed');
-    });
-}
 ```
 
 
