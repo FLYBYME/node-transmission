@@ -121,7 +121,7 @@ describe('transmission', function(){
 			});
 		});
 
-		it('should add torrent from url', function(done){
+		it.skip('should add torrent from url', function(done){
 			transmission.addUrl(sampleUrl, function(err, info){
 				if (err) {
 					done(err);
@@ -141,8 +141,8 @@ describe('transmission', function(){
                 if (err) {
                     done(err);
                 } else {
-					var newName = 'new Torrent Name';
-					var path = './';
+					var newName = 'windows-10-installer.exe';
+					var path = 'ubuntu-14.04.1-desktop-amd64.iso';
 					transmission.rename(info.id, path, newName, function(err, info){
                         if (err) {
                             done(err);
