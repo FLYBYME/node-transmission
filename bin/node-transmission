@@ -18,7 +18,7 @@ switch (argv._[0]) {
         t.startAll(onSuccessLog('All torrents started'));
         break;
     case 'stop-all':
-        t.stopAll(onSuccessLog('All torrents stopped'))
+        t.stopAll(onSuccessLog('All torrents stopped'));
         break;
     default:
         console.log('Unknown option');
