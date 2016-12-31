@@ -132,6 +132,15 @@ transmission.get(function(err, arg){
 });
 ```
 
+### transmission.waitForState(id, targetState, callback)
+
+Polls the server and waits for the target state.
+targetState = ['STOPPED', 'CHECK_WAIT', 'CHECK', 'DOWNLOAD_WAIT', 'DOWNLOAD', 'SEED_WAIT', 'SEED', 'ISOLATED'];
+
+```js
+transmission.waitForState(id, targetState, function(err, arg){});
+```
+
 ### transmission.stop(ids, callback)
 
 Stop working torrents.
@@ -317,6 +326,7 @@ function removeTorrent(id) {
 
 // Get torrent state
 function getStatusType(type){
+	return transmission.statusArray[type]
 	if(type === 0){
 		return 'STOPPED';
 	} else if(type === 1){
