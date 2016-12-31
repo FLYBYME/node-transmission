@@ -257,13 +257,9 @@ function deleteTorrent(id){
 		if (err){
 			console.log(err);
 		} else {
-			console.log(result);// Read this output to get more details which can be accessed as shown below.
-			// Extra details
-			console.log('bt.get returned ' + result.torrents.length + ' torrents');
-	 		result.torrents.forEach(function(torrent) {
-	 			console.log('hashString', torrent.hashString)
-	 		});
-	 		removeTorrent(id);
+			transmission.get(id, function(err, result) {
+		       //err no torrent found...
+		    });
 		}
 	});
 }
