@@ -206,6 +206,14 @@ Get client session stats.
 transmission.sessionStats(function(err, arg){});
 ```
 
+### transmission.freeSpace(path, callback)
+
+Get free space available on the server for the specified directory.
+
+```js
+transmission.freeSpace(path, function(err, arg){});
+```
+
 ### All together.
 
 ```js
