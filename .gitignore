@@ -7,3 +7,5 @@ npm-debug.log
 .env
 tmp
 
+/.vs/ProjectSettings.json
+/.vs/slnx.sqlite
